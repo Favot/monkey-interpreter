@@ -34,9 +34,33 @@ func (lexer *Lexer) NextToken() token.Token {
 
 	switch lexer.currentChar {
 	case '=':
-		currentToken = newToken(token.ASSIGN, lexer.currentChar)
+		if lexer.peekNextChar() == '=' {
+			char := lexer.currentChar
+			lexer.readChar()
+			currentToken = token.Token{Type: token.EQUALS, Value: string(char) + string(lexer.currentChar)}
+		} else {
+			currentToken = newToken(token.ASSIGN, lexer.currentChar)
+		}
 	case '+':
 		currentToken = newToken(token.ADD, lexer.currentChar)
+	case '-':
+		currentToken = newToken(token.MINUS, lexer.currentChar)
+	case '!':
+		if lexer.peekNextChar() == '=' {
+			char := lexer.currentChar
+			lexer.readChar()
+			currentToken = token.Token{Type: token.NOT_EQUALS, Value: string(char) + string(lexer.currentChar)}
+		} else {
+			currentToken = newToken(token.BANG, lexer.currentChar)
+		}
+	case '*':
+		currentToken = newToken(token.ASTERISK, lexer.currentChar)
+	case '/':
+		currentToken = newToken(token.SLASH, lexer.currentChar)
+	case '<':
+		currentToken = newToken(token.LESS_THAN, lexer.currentChar)
+	case '>':
+		currentToken = newToken(token.GREATER_THAN, lexer.currentChar)
 	case '(':
 		currentToken = newToken(token.LEFT_PARENTHESIS, lexer.currentChar)
 	case ')':
@@ -103,5 +127,13 @@ func (lexer *Lexer) readNumber() string {
 func (lexer *Lexer) skipWhitespace() {
 	for lexer.currentChar == ' ' || lexer.currentChar == '\t' || lexer.currentChar == '\n' || lexer.currentChar == '\r' {
 		lexer.readChar()
+	}
+}
+
+func (lexer *Lexer) peekNextChar() byte {
+	if lexer.readPosition >= len(lexer.input) {
+		return 0
+	} else {
+		return lexer.input[lexer.readPosition]
 	}
 }
