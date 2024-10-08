@@ -42,6 +42,7 @@ func TestLetStatements(t *testing.T) {
 		}
 	}
 }
+
 func testLetStatement(t *testing.T, statement abstractSyntaxTree.Statement, name string) bool {
 	if statement.TokenLiteral() != "let" {
 		t.Errorf("s.TokenLiteral not 'let'. got=%q", statement.TokenLiteral())
@@ -77,5 +78,24 @@ func checkParserError(t *testing.T, parser *Parser) {
 	}
 
 	t.FailNow()
+
+}
+
+func TestReturnStatements(t *testing.T) {
+	input := `
+		return 5;
+		return 10;
+		return 993322
+		`
+	lexer := lexer.NewLexer(input)
+	parser := NewParser()
+
+	program := parser.parseProgram()
+
+	checkParserError(t, parser)
+
+	if len(program.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statemen, got=%d", len(program.Statements))
+	}
 
 }
