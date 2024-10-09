@@ -37,7 +37,7 @@ func (lexer *Lexer) NextToken() token.Token {
 		if lexer.peekNextChar() == '=' {
 			char := lexer.currentChar
 			lexer.readChar()
-			currentToken = token.Token{Type: token.EQUALS, Value: string(char) + string(lexer.currentChar)}
+			currentToken = token.Token{Type: token.EQUALS, Literal: string(char) + string(lexer.currentChar)}
 		} else {
 			currentToken = newToken(token.ASSIGN, lexer.currentChar)
 		}
@@ -49,7 +49,7 @@ func (lexer *Lexer) NextToken() token.Token {
 		if lexer.peekNextChar() == '=' {
 			char := lexer.currentChar
 			lexer.readChar()
-			currentToken = token.Token{Type: token.NOT_EQUALS, Value: string(char) + string(lexer.currentChar)}
+			currentToken = token.Token{Type: token.NOT_EQUALS, Literal: string(char) + string(lexer.currentChar)}
 		} else {
 			currentToken = newToken(token.BANG, lexer.currentChar)
 		}
@@ -74,15 +74,15 @@ func (lexer *Lexer) NextToken() token.Token {
 	case '}':
 		currentToken = newToken(token.RIGHT_BRACE, lexer.currentChar)
 	case 0:
-		currentToken.Value = ""
+		currentToken.Literal = ""
 		currentToken.Type = token.EOF
 	default:
 		if isLetter(lexer.currentChar) {
-			currentToken.Value = lexer.readIdentifer()
-			currentToken.Type = token.LookupIdentifier(currentToken.Value)
+			currentToken.Literal = lexer.readIdentifer()
+			currentToken.Type = token.LookupIdentifier(currentToken.Literal)
 			return currentToken
 		} else if isDigit(lexer.currentChar) {
-			currentToken.Value = lexer.readNumber()
+			currentToken.Literal = lexer.readNumber()
 			currentToken.Type = token.INT
 			return currentToken
 		} else {
@@ -109,7 +109,7 @@ func isLetter(char byte) bool {
 }
 
 func newToken(tokenType token.TokenType, char byte) token.Token {
-	return token.Token{Type: tokenType, Value: string(char)}
+	return token.Token{Type: tokenType, Literal: string(char)}
 }
 
 func isDigit(char byte) bool {

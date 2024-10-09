@@ -116,9 +116,9 @@ func TestNextToken(t *testing.T) {
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
 				i, tt.expectedType, token.Type)
 		}
-		if token.Value != tt.expectedLiteral {
+		if token.Literal != tt.expectedLiteral {
 			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, token.Value)
+				i, tt.expectedLiteral, token.Literal)
 		}
 	}
 }
