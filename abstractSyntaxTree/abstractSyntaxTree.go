@@ -143,16 +143,16 @@ func (prefixExpression *PrefixEpression) String() string {
 	return out.String()
 }
 
-type InfixEpression struct {
+type InfixExpression struct {
 	Token    token.Token
 	Left     Expression
 	Operator string
 	Right    Expression
 }
 
-func (infixExpression *InfixEpression) expressionNode()      {}
-func (infixExpression *InfixEpression) TokenLiteral() string { return infixExpression.Token.Literal }
-func (infixExpression *InfixEpression) String() string {
+func (infixExpression *InfixExpression) expressionNode()      {}
+func (infixExpression *InfixExpression) TokenLiteral() string { return infixExpression.Token.Literal }
+func (infixExpression *InfixExpression) String() string {
 	var out bytes.Buffer
 
 	out.WriteString("(")

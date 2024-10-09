@@ -269,7 +269,7 @@ func (parser *Parser) currentPrecedence() int {
 }
 
 func (parser *Parser) parseInfixExpression(left abstractSyntaxTree.Expression) abstractSyntaxTree.Expression {
-	expression := &abstractSyntaxTree.InfixEpression{
+	expression := &abstractSyntaxTree.InfixExpression{
 		Token:    parser.currentToken,
 		Operator: parser.currentToken.Literal,
 		Left:     left,
