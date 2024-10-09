@@ -9,9 +9,9 @@ import (
 
 func TestLetStatements(t *testing.T) {
 	input := `
-		let x  5;
-		let  = 10;
-		let 838383;
+		let x = 5;
+		let y = 10;
+		let foobar = 838383;
 	`
 
 	lexer := lexer.NewLexer(input)
@@ -85,10 +85,10 @@ func TestReturnStatements(t *testing.T) {
 	input := `
 		return 5;
 		return 10;
-		return 993322
+		return 993322;
 		`
 	lexer := lexer.NewLexer(input)
-	parser := NewParser()
+	parser := NewParser(lexer)
 
 	program := parser.parseProgram()
 
@@ -96,6 +96,17 @@ func TestReturnStatements(t *testing.T) {
 
 	if len(program.Statements) != 3 {
 		t.Fatalf("program.Statements does not contain 3 statemen, got=%d", len(program.Statements))
+	}
+
+	for _, statement := range program.Statements {
+		returnStatement, ok := statement.(*abstractSyntaxTree.ReturnStatement)
+		if !ok {
+			t.Errorf("Statement not *abstractSyntaxTree.ReturnStatement. got=%T", statement)
+			continue
+		}
+		if returnStatement.TokenLiteral() != "return" {
+			t.Errorf("returnStatement.TokenLiteral not 'return', got %q", returnStatement.TokenLiteral())
+		}
 	}
 
 }

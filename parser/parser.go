@@ -59,6 +59,8 @@ func (parser *Parser) parseStatement() abstractSyntaxTree.Statement {
 	switch parser.currentToken.Type {
 	case token.LET:
 		return parser.parseLetStatement()
+	case token.RETURN:
+		return parser.parseReturnStatement()
 	default:
 		return nil
 	}
@@ -99,4 +101,19 @@ func (parser *Parser) expectPeek(tokenType token.TokenType) bool {
 		parser.peekError(tokenType)
 		return false
 	}
+}
+
+func (parser *Parser) parseReturnStatement() *abstractSyntaxTree.ReturnStatement {
+
+	statement := &abstractSyntaxTree.ReturnStatement{
+		Token: parser.currentToken,
+	}
+
+	parser.nextToken()
+
+	for !parser.currentTokenIs(token.SEMICOLON) {
+		parser.nextToken()
+	}
+
+	return statement
 }
